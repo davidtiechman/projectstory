@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול מלאי</title>
+    <style>
+        /* עיצוב כללי לדף */
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl; /* משנה את כיוון הדף לעברית */
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* עיצוב התיבה שתכיל את כל התוכן */
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        /* עיצוב כותרת ראשית */
+        h1 {
+            color: #333;
+        }
+
+        /* עיצוב כותרת משנה */
+        h2 {
+            color: #555;
+        }
+
+        /* עיצוב הטופס */
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* עיצוב רשימת המלאי */
+        #inventory-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #inventory-list li {
+            padding: 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>עדכון מלאי</h1>
+        <form action="/update" method="post">
+            <!-- שדה שם סוכן -->
+            <label for="agent">בחר סוכן:</label>
+            <select name="agent" id="agent">
+                <option value="Sagent1">סוכן 1</option>
+                <option value="Sagent2">סוכן 2</option>
+                <option value="Sagent3">סוכן 3</option>
+                <option value="Sagent3">סוכן 4</option>
+            </select>
+            <br><br>
+
+            <label for="item">בחר מוצר:</label>
+            <select name="item" id="item">
+                <option value="shirts">חולצות</option>
+                <option value="skirts_kanady">חצאיות קנדי</option>
+                <option value="sarafans_kanady">סרפנים קנדי</option>
+                <option value="sarafans_china">סרפנים סיני</option>
+                <option value="sarafans_china">סרפנים סיני</option>
+            </select>
+            <br><br>
+
+            <label for="quantity">כמות שנמכרה:</label>
+            <input type="number" name="quantity" required>
+            <br><br>
+
+            <button type="submit">עדכן מלאי</button>
+        </form>
+
+        <h2>מלאי נוכחי</h2>
+        <ul id="inventory-list"></ul>
+    </div>
+
+    <script>
+        async function loadInventory() {
+            let response = await fetch("/inventory");
+            let data = await response.json();
+            let list = document.getElementById("inventory-list");
+            list.innerHTML = "";
+            for (let item in data) {
+                let li = document.createElement("li");
+                li.textContent = `${item}: ${data[item]}`;
+                list.appendChild(li);
+            }
+        }
+        loadInventory();
+    </script>
+</body>
+</html>
